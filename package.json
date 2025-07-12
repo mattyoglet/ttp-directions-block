@@ -1,0 +1,13 @@
+{
+  "name": "ttp-directions-block",
+  "version": "1.0.0",
+  "description": "TTP Directions WordPress Block",
+  "main": "build/index.js",
+  "scripts": {
+    "build": "wp-scripts build",
+    "start": "wp-scripts start"
+  },
+  "devDependencies": {
+    "@wordpress/scripts": "^24.1.0"
+  }
+}
