@@ -1,0 +1,50 @@
+name: Build WordPress Block
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:  # Allows manual trigger
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm install
+    
+    - name: Build project
+      run: npm run build
+    
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: ttp-directions-build
+        path: |
+          build/
+          *.php
+        retention-days: 30
+    
+    - name: Create release zip
+      run: |
+        mkdir -p release
+        cp -r build/ release/
+        cp *.php release/
+        cd release
+        zip -r ../ttp-directions-block.zip .
+    
+    - name: Upload release zip
+      uses: actions/upload-artifact@v4
+      with:
+        name: ttp-directions-plugin-zip
+        path: ttp-directions-block.zip
+        retention-days: 30
